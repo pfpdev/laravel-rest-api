@@ -1,12 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\v1\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function (Request $request) {
-    $responseMessage = [
-        'message' => 'REST Api'
-    ];
-
-    return response()->json($responseMessage);
-});
+Route::prefix('v1')
+    ->name('api.v1.')
+    ->group(function () {
+        Route::post('/auth/register', [AuthController::class, 'register']);
+    });
