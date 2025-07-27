@@ -9,18 +9,17 @@ use App\Services\Api\v1\AuthService;
 
 class AuthController extends Controller
 {
-    // We're passing in the controller action, the RegisterRequest which
-    // we'll use to validate the basic data that we're sending in the request
     public function register(RegisterRequest $request): RegisterResource
     {
-        // We're passing to the Service ONLY the data that has been validated.
-        // The field inputs that are mentioned in RegisterRequest::rules() method.
-        // This prevents unnecessary or potentially unsecure data to be passed to
-        // the service and/or even further to data handlers and data sources
-        $registrationData = (new AuthService())->register($request->validated());
+        $user = (new AuthService())->register($request->validated());
 
-        // We then use the Resource class to format the data
-        // coming from the service, for the HTTP reponse
-        return new RegisterResource($registrationData);
+        // if the service has not successfully created the new user we'll return a generic
+        // server error, and internally, we'll investigate, the problems, in the error logs
+        // saved in the exception handling from the service
+        if( $user === null) {
+            abort(500);
+        }
+
+        return new RegisterResource($user);
     }
 }
