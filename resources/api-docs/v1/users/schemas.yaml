@@ -1,0 +1,16 @@
+CurrentUserResponse:
+  type: object
+  properties:
+    first_name:
+      type: string
+      example: John
+    last_name:
+      type: string
+      example: Doe
+    email:
+      type: string
+      format: email
+      example: john.doe@example.com
+    phone:
+      type: string
+      example: +40700222999

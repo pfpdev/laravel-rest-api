@@ -1,0 +1,75 @@
+RegisterRequest:
+  type: object
+  required:
+    - first_name
+    - last_name
+    - email
+    - phone
+    - password
+  properties:
+    first_name:
+      type: string
+      minLength: 1
+      maxLength: 100
+      example: John
+    last_name:
+      type: string
+      minLength: 1
+      maxLength: 100
+      example: Doe
+    email:
+      type: string
+      format: email
+      example: john@example.com
+    phone:
+      type: string
+      pattern: '^\\+?[1-9]\\d{7,14}$'
+      example: +40700222999
+      description: Phone number in international format
+    password:
+      type: string
+      minLength: 6
+      example: secret123
+RegisterResponse:
+  type: object
+  properties:
+    message:
+      type: string
+      example: Account created successfully.
+    data:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+LoginRequest:
+  type: object
+  required:
+    - email
+    - password
+  properties:
+    email:
+      type: string
+      format: email
+      minLength: 6
+      maxLength: 255
+      example: john@example.com
+    password:
+      type: string
+      format: password
+      minLength: 6
+      maxLength: 255
+      example: secret123
+LoginResponse:
+  type: object
+  properties:
+    message:
+      type: string
+      example: Login successful.
+    data:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+

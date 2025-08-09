@@ -1,0 +1,22 @@
+post:
+  tags:
+    - Auth
+  summary: Register a new user
+  security: []  # Public endpoint (overrides global bearerAuth)
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas.yaml#/RegisterRequest'
+  responses:
+    '201':
+      description: Account created successfully
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas.yaml#/RegisterResponse'
+    '422':
+      description: Validation error
+    '409':
+      description: Email or phone already exists

@@ -1,0 +1,22 @@
+post:
+  tags:
+    - Auth
+  summary: Log in a user and return token
+  security: []  # Public route – no bearer token required
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas.yaml#/LoginRequest'
+  responses:
+    '200':
+      description: Authentication successful
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas.yaml#/LoginResponse'
+    '401':
+      description: Invalid credentials
+    '422':
+      description: Validation error
