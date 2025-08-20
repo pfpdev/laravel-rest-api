@@ -54,7 +54,7 @@ class CurrentUserController extends Controller
     public function updateCurrentUserPassword(PasswordUpdateRequest $request): JsonResponse
     {
         $updatePassword = $this->service->updatedCurrentUserPassword($request->validated()['password']);
-        if ($updatePassword === null) {
+        if ($updatePassword === false) {
             abort(500);
         }
 

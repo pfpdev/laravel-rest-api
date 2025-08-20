@@ -32,12 +32,15 @@ class CurrentUserService
         return null;
     }
 
-    public function updatedCurrentUserPassword(string $newPassword): ?Notification
+    public function updatedCurrentUserPassword(string $newPassword): bool
     {
         try {
-            User::find(auth()->id())->update(['password' => $newPassword]);
+            $user = User::find(auth()->id());
+            $user->update(['password' => $newPassword]);
+
+            return true;
         } catch (\Exception $exception) { }
 
-        return null;
+        return false;
     }
 }
