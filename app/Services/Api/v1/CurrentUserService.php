@@ -29,6 +29,14 @@ class CurrentUserService
             return $userNotifications->refresh();
         } catch (\Exception $exception) { }
 
+        return null;
+    }
+
+    public function updatedCurrentUserPassword(string $newPassword): ?Notification
+    {
+        try {
+            User::find(auth()->id())->update(['password' => $newPassword]);
+        } catch (\Exception $exception) { }
 
         return null;
     }

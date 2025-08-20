@@ -47,11 +47,16 @@ class CurrentUserController extends Controller
         if ($updatedNotifications === null) {
             abort(500);
         }
+
         return new NotificationsResource($updatedNotifications);
     }
 
     public function updateCurrentUserPassword(PasswordUpdateRequest $request): JsonResponse
     {
+        $updatePassword = $this->service->updatedCurrentUserPassword($request->validated()['password']);
+        if ($updatePassword === null) {
+            abort(500);
+        }
 
         return response()->json([], 201);
     }
