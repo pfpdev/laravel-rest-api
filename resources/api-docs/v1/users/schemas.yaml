@@ -14,3 +14,68 @@ CurrentUserResponse:
     phone:
       type: string
       example: +40700222999
+UserProfile:
+  type: object
+  required: [first_name, last_name, email]
+  properties:
+    first_name:
+      type: string
+      maxLength: 100
+    last_name:
+      type: string
+      maxLength: 100
+    email:
+      type: string
+      format: email
+      maxLength: 255
+    phone:
+      type: string
+      description: E.164 format (e.g., +40700222999)
+Notifications:
+  type: object
+  description: Notification preference flags as integers (0/1)
+  properties:
+    reminder_email:
+      type: integer
+      enum: [0, 1]
+    reminder_sms:
+      type: integer
+      enum: [0, 1]
+    booking_updates:
+      type: integer
+      enum: [0, 1]
+    marketing_email:
+      type: integer
+      enum: [0, 1]
+ApiMessage:
+  type: object
+  properties:
+    message:
+      type: string
+  example:
+    message: Operation successful.
+
+Error401:
+  type: object
+  properties:
+    message:
+      type: string
+  example:
+    message: Unauthenticated.
+
+Error422:
+  type: object
+  properties:
+    message:
+      type: string
+    errors:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          type: string
+  example:
+    message: The given data was invalid.
+    errors:
+      email:
+        - The email has already been taken.

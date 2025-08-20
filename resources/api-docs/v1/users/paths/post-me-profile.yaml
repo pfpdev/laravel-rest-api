@@ -1,0 +1,40 @@
+tags:
+  - CurrentUser
+summary: Update current user's profile
+operationId: updateCurrentUserProfile
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        description: All fields optional; send only what you want to change.
+        properties:
+          first_name: { type: string, minLength: 1, maxLength: 100 }
+          last_name:  { type: string, minLength: 1, maxLength: 100 }
+          email:      { type: string, format: email, maxLength: 255 }
+          phone:      { type: string, description: E.164 format, example: '+40700222999' }
+responses:
+  '200':
+    description: Profile updated
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message: { type: string, example: Profile updated. }
+            data:    { $ref: '../schemas.yaml#/UserProfile' }
+  '401':
+    description: Unauthenticated
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas.yaml#/Error401'
+  '422':
+    description: Validation error
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas.yaml#/Error422'

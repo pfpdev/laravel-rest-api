@@ -1,9 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\v1\AuthController;
-use App\Http\Controllers\Api\v1\UserController;
+use App\Http\Controllers\Api\v1\CurrentUserController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::prefix('v1')
     ->name('api.v1.')
@@ -23,7 +22,16 @@ Route::prefix('v1')
             Route::prefix('users')
                 ->name('users.')
                 ->group(function () {
-                    Route::get('/me', [UserController::class, 'getCurrentUserDetails'])->name('me');
+                    Route::get('/me', [CurrentUserController::class, 'getCurrentUserDetails'])
+                        ->name('me.profile');
+                    Route::post('/me/profile', [CurrentUserController::class, 'updateCurrentUserDetails'])
+                        ->name('me.profile.update');
+                    Route::get('/me/notifications', [CurrentUserController::class, 'getCurrentUserNotificationSettings'])
+                        ->name('me.notifications');
+                    Route::post('/me/notifications', [CurrentUserController::class, 'updateCurrentUserNotificationSettings'])
+                        ->name('me.notifications.update');
+                    Route::post('/me/password', [CurrentUserController::class, 'updateCurrentUserPassword'])
+                        ->name('me.password.update');
                 });
         });
     });

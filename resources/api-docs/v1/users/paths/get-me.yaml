@@ -1,15 +1,14 @@
-get:
-  tags:
-    - Users
-  summary: Get current authenticated user's details
-  security:
-    - bearerAuth: []  # Requires JWT (inherited globally, but good to be explicit)
-  responses:
-    '200':
-      description: Authenticated user data
-      content:
-        application/json:
-          schema:
-            $ref: '../schemas.yaml#/CurrentUserResponse'
-    '401':
-      description: Unauthorized – missing or invalid token
+tags:
+  - CurrentUser
+summary: Get current authenticated user's details
+security:
+  - bearerAuth: []  # Requires JWT (inherited globally, but good to be explicit)
+responses:
+  '200':
+    description: Authenticated user data
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas.yaml#/CurrentUserResponse'
+  '401':
+    description: Unauthorized – missing or invalid token

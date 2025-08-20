@@ -1,8 +1,16 @@
 /auth/register:
   $ref: './auth/paths/post-register.yaml'
 
-/v1/auth/login:
+/auth/login:
   $ref: './auth/paths/post-login.yaml'
 
 /users/me:
-  $ref: './users/paths/get-me.yaml'
+  get: { $ref: './users/paths/get-me.yaml' }
+/users/me/profile:
+  post: { $ref: './users/paths/post-me-profile.yaml' }
+/users/me/password:
+  post: { $ref: './users/paths/post-me-password.yaml' }
+/users/me/notifications:
+  get: { $ref: './users/paths/get-me-notifications.yaml' }
+  post: { $ref: './users/paths/post-me-notifications.yaml' }
+

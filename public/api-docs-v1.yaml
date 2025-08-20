@@ -30,7 +30,7 @@ paths:
           description: Email or phone already exists
         '422':
           description: Validation error
-  /v1/auth/login:
+  /auth/login:
     post:
       tags:
         - Auth
@@ -56,7 +56,7 @@ paths:
   /users/me:
     get:
       tags:
-        - Users
+        - CurrentUser
       summary: Get current authenticated user's details
       security:
         - bearerAuth: []
@@ -69,6 +69,182 @@ paths:
                 $ref: '#/components/schemas/CurrentUserResponse'
         '401':
           description: Unauthorized – missing or invalid token
+  /users/me/profile:
+    post:
+      tags:
+        - CurrentUser
+      summary: Update current user's profile
+      operationId: updateCurrentUserProfile
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: All fields optional; send only what you want to change.
+              properties:
+                first_name:
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                last_name:
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                email:
+                  type: string
+                  format: email
+                  maxLength: 255
+                phone:
+                  type: string
+                  description: E.164 format
+                  example: '+40700222999'
+      responses:
+        '200':
+          description: Profile updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Profile updated.
+                  data:
+                    $ref: '#/components/schemas/UserProfile'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error422'
+  /users/me/password:
+    post:
+      tags:
+        - CurrentUser
+      summary: Update current user's password
+      operationId: updateCurrentUserPassword
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+                - new_password
+              properties:
+                password:
+                  type: string
+                  minLength: 6
+                  description: Must match the current password (`current_password` rule).
+                new_password:
+                  type: string
+                  minLength: 6
+                  description: Must be different from `password` (`different:password` rule).
+      responses:
+        '201':
+          description: Updated (empty body)
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {}
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error422'
+  /users/me/notifications:
+    get:
+      tags:
+        - CurrentUser
+      summary: Get current user's notification settings
+      operationId: getCurrentUserNotifications
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Notifications'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+    post:
+      tags:
+        - CurrentUser
+      summary: Update current user's notification settings
+      operationId: updateCurrentUserNotifications
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: |
+                Accepts booleans (true/false), 1/0, or "on"/"off" due to Laravel's boolean rule. Fields are optional and can be sent partially.
+              properties:
+                reminder_email:
+                  type: boolean
+                reminder_sms:
+                  type: boolean
+                booking_updates:
+                  type: boolean
+                marketing_email:
+                  type: boolean
+      responses:
+        '200':
+          description: Notification settings updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Notification settings updated.
+                  data:
+                    $ref: '#/components/schemas/Notifications'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error422'
 components:
   schemas:
     RegisterRequest:
@@ -161,6 +337,73 @@ components:
         phone:
           type: string
           example: 40700222999
+    UserProfile:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - email
+      properties:
+        first_name:
+          type: string
+          maxLength: 100
+        last_name:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        phone:
+          type: string
+          description: E.164 format (e.g., +40700222999)
+    Error401:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Unauthenticated.
+    Error422:
+      type: object
+      properties:
+        message:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+      example:
+        message: The given data was invalid.
+        errors:
+          email:
+            - The email has already been taken.
+    Notifications:
+      type: object
+      description: Notification preference flags as integers (0/1)
+      properties:
+        reminder_email:
+          type: integer
+          enum:
+            - 0
+            - 1
+        reminder_sms:
+          type: integer
+          enum:
+            - 0
+            - 1
+        booking_updates:
+          type: integer
+          enum:
+            - 0
+            - 1
+        marketing_email:
+          type: integer
+          enum:
+            - 0
+            - 1
   securitySchemes:
     bearerAuth:
       type: http

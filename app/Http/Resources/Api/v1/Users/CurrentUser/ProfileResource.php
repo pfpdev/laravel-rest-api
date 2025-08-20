@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Api\v1\Users;
+namespace App\Http\Resources\Api\v1\Users\CurrentUser;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CurrentUserResource extends JsonResource
+class ProfileResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
