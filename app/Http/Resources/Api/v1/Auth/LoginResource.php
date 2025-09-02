@@ -9,11 +9,17 @@ class LoginResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        return [
+        $data = [
             'message' => 'Login successful.',
             'data' => [
                 'token' => $this->jwt,
             ]
         ];
+
+        if ($this->email === 'admin@paws.com') {
+            $data['data']['admin'] = true;
+        }
+
+        return $data;
     }
 }
