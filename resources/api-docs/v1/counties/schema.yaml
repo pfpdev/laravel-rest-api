@@ -1,0 +1,23 @@
+County:
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+    slug:
+      type: string
+      example: cluj
+    name:
+      type: string
+      example: Cluj
+  required: [ id, slug, name ]
+
+CountyIndexResponse:
+  type: object
+  properties:
+    data:
+      type: array
+      items:
+        $ref: '#/County'
+  required: [ data ]
+

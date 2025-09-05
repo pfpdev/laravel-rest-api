@@ -1,0 +1,25 @@
+tags: [Locations]
+summary: Update opening hours for a location
+operationId: locationsUpdateOpeningHours
+security: [{ bearerAuth: [] }]
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas.yaml#/OpeningHoursUpdateRequest'
+responses:
+  '200':
+    description: Opening hours updated
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas.yaml#/OpeningHoursUpdateResponse'
+  '401':
+    $ref: '../../components.yaml#/responses/Unauthorized'
+  '403':
+    $ref: '../../components.yaml#/responses/Forbidden'
+  '404':
+    $ref: '../../components.yaml#/responses/NotFound'
+  '422':
+    $ref: '../../components.yaml#/responses/ValidationError'

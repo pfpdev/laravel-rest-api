@@ -1,0 +1,30 @@
+City:
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+    slug:
+      type: string
+      example: cluj-napoca
+    name:
+      type: string
+      example: Cluj-Napoca
+    county_id:
+      type: integer
+      format: int64
+    county:
+      allOf:
+        - $ref: '../counties/schema.yaml#/County'
+      nullable: true
+  required: [ id, slug, name, county_id ]
+
+CityIndexResponse:
+  type: object
+  properties:
+    data:
+      type: array
+      items:
+        $ref: '#/City'
+  required: [ data ]
+

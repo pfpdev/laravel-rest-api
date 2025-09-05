@@ -3,7 +3,7 @@ info:
   title: Laravel REST API
   version: 1.0.0
 servers:
-  - url: http://localhost:60080/api/v1
+  - url: http://localhost/api/v1
 security:
   - bearerAuth: []
 paths:
@@ -245,6 +245,326 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error422'
+  /locations:
+    get:
+      tags:
+        - Locations
+      summary: List locations (current user)
+      operationId: locationsIndex
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Paginated list of locations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCollectionResponse'
+    post:
+      tags:
+        - Locations
+      summary: Create a location
+      operationId: locationsStore
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationCreateRequest'
+      responses:
+        '201':
+          description: Location created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /locations/{location}:
+    parameters:
+      - $ref: '#/components/parameters/LocationId'
+    get:
+      tags:
+        - Locations
+      summary: Get a location
+      operationId: locationsShow
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Location details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags:
+        - Locations
+      summary: Partially update a location
+      operationId: locationsUpdatePatch
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationUpdateRequest'
+      responses:
+        '200':
+          description: Updated location
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    delete:
+      tags:
+        - Locations
+      summary: Delete a location
+      operationId: locationsDestroy
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Deleted successfully (no content)
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /locations/{location}/activate:
+    parameters:
+      - $ref: '#/components/parameters/LocationId'
+    patch:
+      tags:
+        - Locations
+      summary: Activate a location
+      operationId: locationsActivate
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Location set active=true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /locations/{location}/deactivate:
+    parameters:
+      - $ref: '#/components/parameters/LocationId'
+    patch:
+      tags:
+        - Locations
+      summary: Deactivate a location
+      operationId: locationsDeactivate
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Location set active=false
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /locations/{location}/archive:
+    parameters:
+      - $ref: '#/components/parameters/LocationId'
+    patch:
+      tags:
+        - Locations
+      summary: Archive a location (sets archived=true and active=false)
+      operationId: locationsArchive
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Location archived
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /locations/{location}/opening-hours:
+    parameters:
+      - $ref: '#/components/parameters/LocationId'
+    patch:
+      tags:
+        - Locations
+      summary: Update opening hours for a location
+      operationId: locationsUpdateOpeningHours
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpeningHoursUpdateRequest'
+      responses:
+        '200':
+          description: Opening hours updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpeningHoursUpdateResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /categories:
+    get:
+      tags:
+        - Categories
+      summary: List categories
+      description: Returns all public categories (formerly business types), sorted by name.
+      operationId: listCategories
+      security: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryIndexResponse'
+              examples:
+                default:
+                  value:
+                    data:
+                      - id: 1
+                        slug: grooming
+                        name: Grooming
+                        icon: Scissors
+                        description: Grooming
+                      - id: 2
+                        slug: daily-care
+                        name: Dog Walking
+                        icon: Footprints
+                        description: Daily care
+  /counties:
+    get:
+      tags:
+        - Counties
+      summary: List counties
+      description: Returns all counties, sorted by name.
+      operationId: listCounties
+      security: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountyIndexResponse'
+              examples:
+                default:
+                  value:
+                    data:
+                      - id: 12
+                        slug: cluj
+                        name: Cluj
+                      - id: 40
+                        slug: mures
+                        name: Mureș
+  /cities:
+    get:
+      tags:
+        - Cities
+      summary: List cities
+      description: |
+        Returns cities (optionally filtered by `county_id` or `county_slug`), sorted by name. When available, the parent county is embedded.
+      operationId: listCities
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/CountyIdQuery'
+        - $ref: '#/components/parameters/CountySlugQuery'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Warning:
+              description: |
+                If both `county_id` and `county_slug` are provided, `county_id` is applied and `county_slug` is ignored.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CityIndexResponse'
+              examples:
+                all:
+                  value:
+                    data:
+                      - id: 12001
+                        slug: cluj-napoca
+                        name: Cluj-Napoca
+                        county_id: 12
+                        county:
+                          id: 12
+                          slug: cluj
+                          name: Cluj
+                      - id: 12002
+                        slug: turda
+                        name: Turda
+                        county_id: 12
+                        county:
+                          id: 12
+                          slug: cluj
+                          name: Cluj
+                byCountySlug:
+                  value:
+                    data:
+                      - id: 4001
+                        slug: targu-mures
+                        name: Târgu Mureș
+                        county_id: 40
+                        county:
+                          id: 40
+                          slug: mures
+                          name: Mureș
 components:
   schemas:
     RegisterRequest:
@@ -404,6 +724,376 @@ components:
           enum:
             - 0
             - 1
+    DayHours:
+      type: object
+      properties:
+        open:
+          type: string
+          example: '09:00:00'
+        close:
+          type: string
+          example: '18:00:00'
+    LocationHours:
+      type: object
+      properties:
+        mon:
+          $ref: '#/components/schemas/DayHours'
+        tue:
+          $ref: '#/components/schemas/DayHours'
+        wed:
+          $ref: '#/components/schemas/DayHours'
+        thu:
+          $ref: '#/components/schemas/DayHours'
+        fri:
+          $ref: '#/components/schemas/DayHours'
+        sat:
+          $ref: '#/components/schemas/DayHours'
+        sun:
+          $ref: '#/components/schemas/DayHours'
+    Location:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+        user_id:
+          type: integer
+          example: 42
+        name:
+          type: string
+          example: Main Street Salon
+        email:
+          type: string
+          nullable: true
+          example: contact@salon.ro
+        phone1:
+          type: string
+          nullable: true
+        phone2:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        url_website:
+          type: string
+          nullable: true
+          format: uri
+        url_facebook:
+          type: string
+          nullable: true
+          format: uri
+        url_twitter:
+          type: string
+          nullable: true
+          format: uri
+        url_tiktok:
+          type: string
+          nullable: true
+          format: uri
+        city_id:
+          type: integer
+          nullable: true
+          example: 5
+        active:
+          type: boolean
+          example: true
+        archived:
+          type: boolean
+          example: false
+        hours:
+          $ref: '#/components/schemas/LocationHours'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    LocationCollectionResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
+        meta:
+          type: object
+        links:
+          type: object
+    LocationCreateRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          nullable: true
+        phone1:
+          type: string
+          nullable: true
+        phone2:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        url_website:
+          type: string
+          format: uri
+          nullable: true
+        url_facebook:
+          type: string
+          format: uri
+          nullable: true
+        url_twitter:
+          type: string
+          format: uri
+          nullable: true
+        url_tiktok:
+          type: string
+          format: uri
+          nullable: true
+        city_id:
+          type: integer
+          nullable: true
+        active:
+          type: boolean
+          default: true
+        archived:
+          type: boolean
+          default: false
+    LocationResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Location'
+    LocationUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/LocationCreateRequest'
+      description: All fields optional; provide only those to change.
+    OpeningHoursUpdateRequest:
+      type: object
+      properties:
+        mon_open:
+          type: string
+          example: '09:00'
+        mon_close:
+          type: string
+          example: '18:00'
+        tue_open:
+          type: string
+          example: '09:00'
+        tue_close:
+          type: string
+          example: '18:00'
+        wed_open:
+          type: string
+          example: '09:00'
+        wed_close:
+          type: string
+          example: '18:00'
+        thu_open:
+          type: string
+          example: '09:00'
+        thu_close:
+          type: string
+          example: '18:00'
+        fri_open:
+          type: string
+          example: '09:00'
+        fri_close:
+          type: string
+          example: '18:00'
+        sat_open:
+          type: string
+          example: '09:00'
+        sat_close:
+          type: string
+          example: '18:00'
+        sun_open:
+          type: string
+          example: '09:00'
+        sun_close:
+          type: string
+          example: '18:00'
+    OpeningHoursUpdateResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Opening hours updated.
+        data:
+          $ref: '#/components/schemas/LocationHours'
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        slug:
+          type: string
+          example: grooming
+        name:
+          type: string
+          example: Grooming
+        icon:
+          type: string
+          example: Heart
+        description:
+          type: string
+          example: Give your pet the haircut he deserves.
+      required:
+        - id
+        - slug
+        - name
+    CategoryIndexResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+      required:
+        - data
+    County:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        slug:
+          type: string
+          example: cluj
+        name:
+          type: string
+          example: Cluj
+      required:
+        - id
+        - slug
+        - name
+    CountyIndexResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/County'
+      required:
+        - data
+    City:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        slug:
+          type: string
+          example: cluj-napoca
+        name:
+          type: string
+          example: Cluj-Napoca
+        county_id:
+          type: integer
+          format: int64
+        county:
+          allOf:
+            - $ref: '#/components/schemas/County'
+          nullable: true
+      required:
+        - id
+        - slug
+        - name
+        - county_id
+    CityIndexResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/City'
+      required:
+        - data
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthenticated.
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: This action is unauthorized.
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource not found.
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: The given data was invalid.
+              errors:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: string
+  parameters:
+    LocationId:
+      name: location
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Location ID
+    CountyIdQuery:
+      name: county_id
+      in: query
+      required: false
+      schema:
+        type: integer
+        format: int64
+      description: Filter cities by the numeric county ID.
+    CountySlugQuery:
+      name: county_slug
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 64
+      description: Filter cities by the county slug (e.g., `mures`, `cluj`).
   securitySchemes:
     bearerAuth:
       type: http

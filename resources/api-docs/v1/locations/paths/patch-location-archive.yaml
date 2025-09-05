@@ -1,0 +1,17 @@
+tags: [Locations]
+summary: Archive a location (sets archived=true and active=false)
+operationId: locationsArchive
+security: [{ bearerAuth: [] }]
+responses:
+  '200':
+    description: Location archived
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas.yaml#/LocationResponse'
+  '401':
+    $ref: '../../components.yaml#/responses/Unauthorized'
+  '403':
+    $ref: '../../components.yaml#/responses/Forbidden'
+  '404':
+    $ref: '../../components.yaml#/responses/NotFound'

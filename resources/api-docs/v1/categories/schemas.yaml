@@ -1,0 +1,27 @@
+Category:
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+    slug:
+      type: string
+      example: grooming
+    name:
+      type: string
+      example: Grooming
+    icon:
+      type: string
+      example: Heart
+    description:
+      type: string
+      example: Give your pet the haircut he deserves.
+  required: [ id, slug, name ]
+CategoryIndexResponse:
+  type: object
+  properties:
+    data:
+      type: array
+      items:
+        $ref: '#/Category'
+  required: [ data ]

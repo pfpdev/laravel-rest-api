@@ -1,0 +1,7 @@
+name: county_slug
+in: query
+required: false
+schema:
+  type: string
+  maxLength: 64
+description: Filter cities by the county slug (e.g., `mures`, `cluj`).

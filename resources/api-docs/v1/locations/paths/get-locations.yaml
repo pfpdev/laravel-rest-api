@@ -1,0 +1,13 @@
+tags:
+  - Locations
+summary: List locations (current user)
+operationId: locationsIndex
+security:
+  - bearerAuth: []  # Requires JWT (inherited globally, but good to be explicit)
+responses:
+  '200':
+    description: Paginated list of locations
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas.yaml#/LocationCollectionResponse'

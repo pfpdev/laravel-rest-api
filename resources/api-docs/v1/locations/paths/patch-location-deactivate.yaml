@@ -1,0 +1,17 @@
+tags: [Locations]
+summary: Deactivate a location
+operationId: locationsDeactivate
+security: [{ bearerAuth: [] }]
+responses:
+  '200':
+    description: Location set active=false
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas.yaml#/LocationResponse'
+  '401':
+    $ref: '../../components.yaml#/responses/Unauthorized'
+  '403':
+    $ref: '../../components.yaml#/responses/Forbidden'
+  '404':
+    $ref: '../../components.yaml#/responses/NotFound'

@@ -3,3 +3,61 @@ securitySchemes:
     type: http
     scheme: bearer
     bearerFormat: JWT
+
+parameters:
+  LocationId:
+    name: location
+    in: path
+    required: true
+    schema: { type: integer }
+    description: Location ID
+
+schemas:
+  Location:                    { $ref: './locations/schemas.yaml#/Location' }
+  LocationHours:               { $ref: './locations/schemas.yaml#/LocationHours' }
+  DayHours:                    { $ref: './locations/schemas.yaml#/DayHours' }
+  LocationCreateRequest:       { $ref: './locations/schemas.yaml#/LocationCreateRequest' }
+  LocationUpdateRequest:       { $ref: './locations/schemas.yaml#/LocationUpdateRequest' }
+  OpeningHoursUpdateRequest:   { $ref: './locations/schemas.yaml#/OpeningHoursUpdateRequest' }
+  LocationResponse:            { $ref: './locations/schemas.yaml#/LocationResponse' }
+  OpeningHoursUpdateResponse:  { $ref: './locations/schemas.yaml#/OpeningHoursUpdateResponse' }
+  LocationCollectionResponse:  { $ref: './locations/schemas.yaml#/LocationCollectionResponse' }
+
+responses:
+  Unauthorized:
+    description: Unauthorized
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message: { type: string, example: "Unauthenticated." }
+  Forbidden:
+    description: Forbidden
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message: { type: string, example: "This action is unauthorized." }
+  NotFound:
+    description: Not Found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message: { type: string, example: "Resource not found." }
+  ValidationError:
+    description: Validation error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message: { type: string, example: "The given data was invalid." }
+            errors:
+              type: object
+              additionalProperties:
+                type: array
+                items: { type: string }

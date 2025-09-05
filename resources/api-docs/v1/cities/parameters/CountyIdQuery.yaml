@@ -1,0 +1,7 @@
+name: county_id
+in: query
+required: false
+schema:
+  type: integer
+  format: int64
+description: Filter cities by the numeric county ID.

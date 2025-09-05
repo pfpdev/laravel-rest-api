@@ -1,0 +1,23 @@
+get:
+  tags: [Counties]
+  summary: List counties
+  description: Returns all counties, sorted by name.
+  operationId: listCounties
+  security: []   # Public endpoint
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../schema.yaml#/CountyIndexResponse'
+          examples:
+            default:
+              value:
+                data:
+                  - id: 12
+                    slug: cluj
+                    name: Cluj
+                  - id: 40
+                    slug: mures
+                    name: Mureș

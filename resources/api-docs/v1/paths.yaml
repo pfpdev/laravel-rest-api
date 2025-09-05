@@ -14,3 +14,48 @@
   get: { $ref: './users/paths/get-me-notifications.yaml' }
   post: { $ref: './users/paths/post-me-notifications.yaml' }
 
+/locations:
+  get: { $ref: './locations/paths/get-locations.yaml' }
+  post: { $ref: './locations/paths/post-locations.yaml' }
+
+# single resource
+/locations/{location}:
+  parameters:
+    - $ref: './components.yaml#/parameters/LocationId'
+  get: { $ref: './locations/paths/get-location.yaml' }
+  patch: { $ref: './locations/paths/patch-location.yaml' }
+  delete: { $ref: './locations/paths/delete-location.yaml' }
+
+# state transitions
+/locations/{location}/activate:
+  parameters:
+    - $ref: './components.yaml#/parameters/LocationId'
+  patch: { $ref: './locations/paths/patch-location-activate.yaml' }
+
+# set active=false
+/locations/{location}/deactivate:
+  parameters:
+    - $ref: './components.yaml#/parameters/LocationId'
+  patch: { $ref: './locations/paths/patch-location-deactivate.yaml' }
+
+# set archived=true and active=false
+/locations/{location}/archive:
+  parameters:
+    - $ref: './components.yaml#/parameters/LocationId'
+  patch: { $ref: './locations/paths/patch-location-archive.yaml' }
+
+# opening hours update
+/locations/{location}/opening-hours:
+  parameters:
+    - $ref: './components.yaml#/parameters/LocationId'
+  patch: { $ref: './locations/paths/patch-location-opening-hours.yaml' }
+
+/categories: # ← keep consistent with your actual route casing; assuming '/categories'
+  $ref: './categories/paths/get-index.yaml'
+
+/counties:
+  $ref: './counties/paths/get-index.yaml'
+
+/cities:
+  $ref: './cities/paths/get-index.yaml'
+

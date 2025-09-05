@@ -1,0 +1,25 @@
+tags: [Locations]
+summary: Partially update a location
+operationId: locationsUpdatePatch
+security: [{ bearerAuth: [] }]
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas.yaml#/LocationUpdateRequest'
+responses:
+  '200':
+    description: Updated location
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas.yaml#/LocationResponse'
+  '401':
+    $ref: '../../components.yaml#/responses/Unauthorized'
+  '403':
+    $ref: '../../components.yaml#/responses/Forbidden'
+  '404':
+    $ref: '../../components.yaml#/responses/NotFound'
+  '422':
+    $ref: '../../components.yaml#/responses/ValidationError'

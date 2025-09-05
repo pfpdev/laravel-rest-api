@@ -1,0 +1,25 @@
+tags: [Locations]
+summary: Create a location
+operationId: locationsStore
+security: [{ bearerAuth: [] }]
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas.yaml#/LocationCreateRequest'
+responses:
+  '201':
+    description: Location created
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas.yaml#/LocationResponse'
+  '401':
+    $ref: '../../components.yaml#/responses/Unauthorized'
+  '403':
+    $ref: '../../components.yaml#/responses/Forbidden'
+  '404':
+    $ref: '../../components.yaml#/responses/NotFound'
+  '422':
+    $ref: '../../components.yaml#/responses/ValidationError'

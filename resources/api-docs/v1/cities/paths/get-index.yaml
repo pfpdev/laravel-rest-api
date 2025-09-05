@@ -1,0 +1,56 @@
+get:
+  tags: [Cities]
+  summary: List cities
+  description: >
+    Returns cities (optionally filtered by `county_id` or `county_slug`), sorted by name.
+    When available, the parent county is embedded.
+  operationId: listCities
+  security: []   # Public endpoint
+  parameters:
+    - $ref: '../parameters/CountyIdQuery.yaml'
+    - $ref: '../parameters/CountySlugQuery.yaml'
+  responses:
+    '200':
+      description: OK
+      headers:
+        Warning:
+          description: >
+            If both `county_id` and `county_slug` are provided, `county_id` is applied
+            and `county_slug` is ignored.
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: '../schema.yaml#/CityIndexResponse'
+          examples:
+            all:
+              value:
+                data:
+                  - id: 12001
+                    slug: cluj-napoca
+                    name: Cluj-Napoca
+                    county_id: 12
+                    county:
+                      id: 12
+                      slug: cluj
+                      name: Cluj
+                  - id: 12002
+                    slug: turda
+                    name: Turda
+                    county_id: 12
+                    county:
+                      id: 12
+                      slug: cluj
+                      name: Cluj
+            byCountySlug:
+              value:
+                data:
+                  - id: 4001
+                    slug: targu-mures
+                    name: Târgu Mureș
+                    county_id: 40
+                    county:
+                      id: 40
+                      slug: mures
+                      name: Mureș

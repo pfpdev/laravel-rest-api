@@ -1,0 +1,99 @@
+Location:
+  type: object
+  properties:
+    id: { type: integer, example: 123 }
+    user_id: { type: integer, example: 42 }
+    name: { type: string, example: Main Street Salon }
+    email: { type: string, nullable: true, example: contact@salon.ro }
+    phone1: { type: string, nullable: true }
+    phone2: { type: string, nullable: true }
+    address: { type: string, nullable: true }
+    description: { type: string, nullable: true }
+    url_website: { type: string, nullable: true, format: uri }
+    url_facebook: { type: string, nullable: true, format: uri }
+    url_twitter: { type: string, nullable: true, format: uri }
+    url_tiktok:  { type: string, nullable: true, format: uri }
+    city_id: { type: integer, nullable: true, example: 5 }
+    active:  { type: boolean, example: true }
+    archived: { type: boolean, example: false }
+    hours: { $ref: '#/LocationHours' }
+    created_at: { type: string, format: date-time }
+    updated_at: { type: string, format: date-time }
+
+LocationHours:
+  type: object
+  properties:
+    mon: { $ref: '#/DayHours' }
+    tue: { $ref: '#/DayHours' }
+    wed: { $ref: '#/DayHours' }
+    thu: { $ref: '#/DayHours' }
+    fri: { $ref: '#/DayHours' }
+    sat: { $ref: '#/DayHours' }
+    sun: { $ref: '#/DayHours' }
+
+DayHours:
+  type: object
+  properties:
+    open:  { type: string, example: "09:00:00" }
+    close: { type: string, example: "18:00:00" }
+
+LocationCreateRequest:
+  type: object
+  required: [name]
+  properties:
+    name: { type: string, maxLength: 255 }
+    email: { type: string, format: email, nullable: true }
+    phone1: { type: string, nullable: true }
+    phone2: { type: string, nullable: true }
+    address: { type: string, nullable: true }
+    description: { type: string, nullable: true }
+    url_website: { type: string, format: uri, nullable: true }
+    url_facebook: { type: string, format: uri, nullable: true }
+    url_twitter: { type: string, format: uri, nullable: true }
+    url_tiktok:  { type: string, format: uri, nullable: true }
+    city_id: { type: integer, nullable: true }
+    active:  { type: boolean, default: true }
+    archived: { type: boolean, default: false }
+
+LocationUpdateRequest:
+  allOf:
+    - $ref: '#/LocationCreateRequest'
+  description: "All fields optional; provide only those to change."
+
+OpeningHoursUpdateRequest:
+  type: object
+  properties:
+    mon_open: { type: string, example: "09:00" }
+    mon_close: { type: string, example: "18:00" }
+    tue_open: { type: string, example: "09:00" }
+    tue_close: { type: string, example: "18:00" }
+    wed_open: { type: string, example: "09:00" }
+    wed_close: { type: string, example: "18:00" }
+    thu_open: { type: string, example: "09:00" }
+    thu_close: { type: string, example: "18:00" }
+    fri_open: { type: string, example: "09:00" }
+    fri_close: { type: string, example: "18:00" }
+    sat_open: { type: string, example: "09:00" }
+    sat_close: { type: string, example: "18:00" }
+    sun_open: { type: string, example: "09:00" }
+    sun_close: { type: string, example: "18:00" }
+
+LocationResponse:
+  type: object
+  properties:
+    data: { $ref: '#/Location' }
+
+OpeningHoursUpdateResponse:
+  type: object
+  properties:
+    message: { type: string, example: "Opening hours updated." }
+    data: { $ref: '#/LocationHours' }
+
+LocationCollectionResponse:
+  type: object
+  properties:
+    data:
+      type: array
+      items: { $ref: '#/Location' }
+    meta: { type: object }
+    links: { type: object }

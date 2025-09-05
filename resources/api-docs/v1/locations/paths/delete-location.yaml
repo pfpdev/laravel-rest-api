@@ -1,0 +1,13 @@
+tags: [Locations]
+summary: Delete a location
+operationId: locationsDestroy
+security: [{ bearerAuth: [] }]
+responses:
+  '204':
+    description: Deleted successfully (no content)
+  '401':
+    $ref: '../../components.yaml#/responses/Unauthorized'
+  '403':
+    $ref: '../../components.yaml#/responses/Forbidden'
+  '404':
+    $ref: '../../components.yaml#/responses/NotFound'

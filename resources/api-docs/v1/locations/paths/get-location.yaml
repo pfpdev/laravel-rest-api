@@ -1,0 +1,17 @@
+tags: [Locations]
+summary: Get a location
+operationId: locationsShow
+security: [{ bearerAuth: [] }]
+responses:
+  '200':
+    description: Location details
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas.yaml#/LocationResponse'
+  '401':
+    $ref: '../../components.yaml#/responses/Unauthorized'
+  '403':
+    $ref: '../../components.yaml#/responses/Forbidden'
+  '404':
+    $ref: '../../components.yaml#/responses/NotFound'

@@ -2,6 +2,8 @@
 
 namespace App\Services\Api\v1;
 
+use App\Enums\RoleSlug;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,6 +13,7 @@ class AuthService
     {
         try {
             $user = User::create($inputData);
+            $user->roles()->attach(Role::where('slug', RoleSlug::BUSINESS_OWNER->value)->first()->id);
             $token = $user->createToken('apiToken');
             $user->jwt = $token->plainTextToken;
 

@@ -1,0 +1,27 @@
+get:
+  tags: [Categories]
+  summary: List categories
+  description: Returns all public categories (formerly business types), sorted by name.
+  operationId: listCategories
+  security: []   # Public endpoint (overrides global bearerAuth)
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas.yaml#/CategoryIndexResponse'
+          examples:
+            default:
+              value:
+                data:
+                  - id: 1
+                    slug: grooming
+                    name: Grooming
+                    icon: Scissors
+                    description: Grooming
+                  - id: 2
+                    slug: daily-care
+                    name: Dog Walking
+                    icon: Footprints
+                    description: Daily care
